@@ -198,11 +198,11 @@ def run_bulk(config):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--content', type=str, default='./examples/content')
-    parser.add_argument('--content_segment', type=str, default=None)
-    parser.add_argument('--style', type=str, default='./examples/style')
-    parser.add_argument('--style_segment', type=str, default=None)
-    parser.add_argument('--output', type=str, default='./outputs')
+    parser.add_argument('--content', type=str, default='./examples/1')
+    parser.add_argument('--content_segment', type=str, default='./examples/1_seg')
+    parser.add_argument('--style', type=str, default='./negative')
+    parser.add_argument('--style_segment', type=str, default="./negative_masks")
+    parser.add_argument('--output', type=str, default='./outputs_cav')
     parser.add_argument('--image_size', type=int, default=512)
     parser.add_argument('--alpha', type=float, default=1)
     parser.add_argument('--option_unpool', type=str, default='cat5', choices=['sum', 'cat5'])
@@ -216,10 +216,23 @@ if __name__ == '__main__':
 
     print(config)
 
+    import os
+
+    content_images = os.listdir("./examples/1")
+    style_images = os.listdir("./positive")
+
+    print("Content Images:", content_images)
+    print("Style Images:", style_images)
+
     if not os.path.exists(os.path.join(config.output)):
         os.makedirs(os.path.join(config.output))
 
     '''
-    CUDA_VISIBLE_DEVICES=6 python transfer.py --content ./examples/content --style ./examples/style --content_segment ./examples/content_segment --style_segment ./examples/style_segment/ --output ./outputs/ --verbose --image_size 512 -a
+    CUDA_VISIBLE_DEVICES=6 python transfer.py --content ./examples/1 --style ./examples/style --content_segment ./examples/content_segment --style_segment ./examples/style_segment/ --output ./outputs/ --verbose --image_size 512 -a
     '''
     run_bulk(config)
+
+
+
+
+    

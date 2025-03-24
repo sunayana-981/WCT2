@@ -23,7 +23,16 @@ def svd(feat, iden=False, device='cpu'):
     u, e, v = torch.svd(conv, some=False)
     return u, e, v
 
-
+def resize(feat, target):
+    size = (target.size(2), target.size(1))
+    # Convert tensor to numpy array if needed
+    if isinstance(feat, torch.Tensor):
+        feat = feat.cpu().numpy()
+    if feat.ndim == 2:
+        return np.asarray(Image.fromarray(feat).resize(size, Image.NEAREST))
+    else:
+        return np.asarray(Image.fromarray(feat, mode='RGB').resize(size, Image.NEAREST))
+ 
 def get_squeeze_feat(feat):
     _feat = feat.squeeze(0)
     size = _feat.size(0)
